@@ -6,6 +6,9 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const {user_email, indicated, indicated_manager  } = req.query
+
+  // console.table({user_email, indicated, indicated_manager})
 
   const mailTransporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE,
@@ -17,11 +20,12 @@ export default function handler(
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    to: "hidek.abe@outlook.com",
-    subject: "Sending an email",
+    to: indicated_manager,
+    subject: "Please approve this in your email",
     text: "lmao",
     html: `
-      <b>Hello World </b>
+      <b>Approve here:</b>
+      <a href="http://localhost:3000/api/approve-email?user_email=${user_email}&indicated=${indicated}&indicated_manager=${indicated_manager}">Click here</a>"
     `
   }
 
